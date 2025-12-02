@@ -1,13 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login</title>
+  <title>Login or Sign Up</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #ecf0f1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 300px;
+    }
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background: #27ae60;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #219150;
+    }
+  </style>
 </head>
 <body>
-  <h2>Login or Sign Up</h2>
-  <form method="POST">
-    <input name="username" placeholder="Enter your name">
-    <button type="submit">Continue</button>
-  </form>
+  <div class="box">
+    <h2>Login or Sign Up</h2>
+    <form method="POST">
+      <input name="username" placeholder="Enter your name"><br>
+      <button type="submit">Continue</button>
+    </form>
+  </div>
 </body>
 </html>
