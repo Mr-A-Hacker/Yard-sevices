@@ -1,145 +1,38 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Yard Services</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #2c3e50, #34495e);
-      margin: 0;
-      padding: 0;
-      color: white;
-    }
-    nav {
-      background: rgba(0,0,0,0.7);
-      padding: 15px;
-      text-align: center;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    nav a {
-      color: #ecf0f1;
-      text-decoration: none;
-      margin: 0 15px;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-    nav a:hover {
-      color: #1abc9c;
-      transform: scale(1.1);
-    }
-    header {
-      padding: 60px 20px;
-      text-align: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 42px;
-      color: #1abc9c;
-      animation: fadeIn 1s ease-in-out;
-    }
-    header p {
-      font-size: 20px;
-      color: #ecf0f1;
-      margin-top: 10px;
-    }
-    .buttons {
-      text-align: center;
-      margin: 30px;
-    }
-    .buttons a {
-      display: inline-block;
-      margin: 10px;
-      padding: 14px 28px;
-      background: #3498db;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-      font-size: 16px;
-      transition: 0.3s;
-    }
-    .buttons a:hover {
-      background: #2980b9;
-      transform: scale(1.05);
-    }
-    .posts {
-      max-width: 900px;
-      margin: 40px auto;
-      background: rgba(255,255,255,0.1);
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-    }
-    .post {
-      margin-bottom: 25px;
-      animation: fadeIn 1s ease-in-out;
-    }
-    .post h3 {
-      color: #1abc9c;
-      margin-bottom: 8px;
-    }
-    .post img {
-      max-width: 100%;
-      border-radius: 6px;
-      margin-top: 10px;
-    }
-    hr {
-      border: none;
-      border-top: 1px solid rgba(255,255,255,0.2);
-    }
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(-20px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-  </style>
-</head>
-<body>
-  <!-- Navbar -->
-  <nav>
-    <a href="/">Home</a>
-    {% if logged_in %}
-      <a href="/get-started">Get Started</a>
-      {% if session['user'] == 'admin' %}
-        <a href="/admin">Admin</a>
+{% extends "base.html" %}
+
+{% block title %}Home - Yard Services{% endblock %}
+
+{% block content %}
+<header style="padding:60px 20px; text-align:center;">
+  <h1 style="margin:0; font-size:42px; color:#1abc9c; animation:fadeIn 1s ease-in-out;">
+    Welcome to Yard Services
+  </h1>
+  <p style="font-size:20px; color:#ecf0f1; margin-top:10px;">
+    Reliable lawn care, snow removal, and more
+  </p>
+</header>
+
+<div class="buttons" style="text-align:center; margin:30px;">
+  {% if logged_in %}
+    <a href="/get-started" style="display:inline-block; margin:10px; padding:14px 28px; background:#3498db; color:white; text-decoration:none; border-radius:8px; transition:0.3s;">Get Started Now</a>
+    <a href="/logout" style="display:inline-block; margin:10px; padding:14px 28px; background:#3498db; color:white; text-decoration:none; border-radius:8px; transition:0.3s;">Logout</a>
+  {% else %}
+    <a href="/login" style="display:inline-block; margin:10px; padding:14px 28px; background:#3498db; color:white; text-decoration:none; border-radius:8px; transition:0.3s;">Login</a>
+    <a href="/signup" style="display:inline-block; margin:10px; padding:14px 28px; background:#3498db; color:white; text-decoration:none; border-radius:8px; transition:0.3s;">Sign Up</a>
+  {% endif %}
+</div>
+
+<div class="posts" style="max-width:900px; margin:40px auto; background:rgba(255,255,255,0.1); padding:25px; border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,0.3);">
+  <h2>Latest Updates</h2>
+  {% for post in posts %}
+    <div class="post" style="margin-bottom:25px; animation:fadeIn 1s ease-in-out;">
+      <h3 style="color:#1abc9c; margin-bottom:8px;">{{ post.title }}</h3>
+      <p>{{ post.content }}</p>
+      {% if post.image %}
+        <img src="{{ url_for('static', filename='uploads/' + post.image) }}" style="max-width:100%; border-radius:6px; margin-top:10px;">
       {% endif %}
-      <a href="/logout">Logout</a>
-    {% else %}
-      <a href="/login">Login</a>
-      <a href="/signup">Sign Up</a>
-    {% endif %}
-  </nav>
-
-  <!-- Hero Header -->
-  <header>
-    <h1>Welcome to Yard Services</h1>
-    <p>Reliable lawn care, snow removal, and more</p>
-  </header>
-
-  <!-- Action Buttons -->
-  <div class="buttons">
-    {% if logged_in %}
-      <a href="/get-started">Get Started Now</a>
-      <a href="/logout">Logout</a>
-    {% else %}
-      <a href="/login">Login</a>
-      <a href="/signup">Sign Up</a>
-    {% endif %}
-  </div>
-
-  <!-- Posts Section -->
-  <div class="posts">
-    <h2>Latest Updates</h2>
-    {% for post in posts %}
-      <div class="post">
-        <h3>{{ post.title }}</h3>
-        <p>{{ post.content }}</p>
-        {% if post.image %}
-          <img src="{{ url_for('static', filename='uploads/' + post.image) }}">
-        {% endif %}
-      </div>
-      <hr>
-    {% endfor %}
-  </div>
-</body>
-</html>
+    </div>
+    <hr style="border:none; border-top:1px solid rgba(255,255,255,0.2);">
+  {% endfor %}
+</div>
+{% endblock %}
