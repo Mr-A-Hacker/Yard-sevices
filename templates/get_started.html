@@ -2,18 +2,79 @@
 <html>
 <head>
   <title>Get Started</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f9fc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .form-box {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 350px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #2ecc71;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #27ae60;
+    }
+    .total {
+      text-align: center;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #34495e;
+    }
+  </style>
 </head>
 <body>
-  <h2>Service Request Form</h2>
-  <form method="POST">
-    <input name="address" placeholder="Your Address"><br>
-    <input name="phone" placeholder="Phone Number"><br>
-    <select name="service">
+  <div class="form-box">
+    <h2>Service Request</h2>
+    <form method="POST">
+      <input name="address" placeholder="Your Address" required>
+      <input name="phone" placeholder="Phone Number" required>
+      <select name="service" id="service-select" onchange="updateTotal()" required>
+        {% for service, price in services.items() %}
+          <option value="{{ service }}">{{ service }} (${{ price }})</option>
+        {% endfor %}
+      </select>
+      <div class="total" id="total-display">Total: ${{ services.values()|list()[0] }}</div>
+      <button type="submit">Submit Request</button>
+    </form>
+  </div>
+
+  <script>
+    const prices = {
       {% for service, price in services.items() %}
-        <option value="{{ service }}">{{ service }} (${{ price }})</option>
+        "{{ service }}": {{ price }},
       {% endfor %}
-    </select><br>
-    <button type="submit">Submit</button>
-  </form>
+    };
+    function updateTotal() {
+      const selected = document.getElementById('service-select').value;
+      document.getElementById('total-display').innerText = "Total: $" + prices[selected];
+    }
+  </script>
 </body>
 </html>
