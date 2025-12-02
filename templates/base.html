@@ -8,10 +8,11 @@
   <!-- Stylesheet -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-  <!-- Favicon (yard logo in tab) -->
+  <!-- Favicon -->
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
 </head>
-<body style="margin:0; font-family:Arial, sans-serif; background:#2c3e50; color:white;">
+<body style="margin:0; font-family:Arial, sans-serif; background:#2c3e50; color:white;
+             display:flex; flex-direction:column; min-height:100vh;">
 
   <!-- Navbar -->
   <nav style="background:#1abc9c; padding:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -33,12 +34,12 @@
   </nav>
 
   <!-- Page Content -->
-  <main style="padding:20px;">
+  <main style="flex:1; padding:20px;">
     {% block content %}{% endblock %}
   </main>
 
-  <!-- Footer -->
-  <footer style="background:#1abc9c; padding:15px; text-align:center; margin-top:40px;">
+  <!-- Footer pinned to bottom -->
+  <footer style="background:#1abc9c; padding:15px; text-align:center; margin-top:auto;">
     <p style="margin:0;">&copy; 2025 Yard Services. All rights reserved.</p>
   </footer>
 </body>
