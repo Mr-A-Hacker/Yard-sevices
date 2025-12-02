@@ -1,45 +1,124 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Admin Panel</title>
+  <title>Admin Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f9fc;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 30%;
+    }
+    h2 {
+      margin-top: 0;
+      color: #34495e;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background: #2980b9;
+    }
+    .posts {
+      margin: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    .post img {
+      max-width: 100%;
+      border-radius: 5px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Admin Panel</h1>
+  <header>
+    <h1>Admin Dashboard</h1>
+    <p>Manage posts, services, and pricing</p>
+  </header>
 
-  <h2>Create a New Post</h2>
-  <form method="POST" enctype="multipart/form-data">
-    <input name="title" placeholder="Post Title"><br>
-    <textarea name="content" placeholder="Post Content"></textarea><br>
-    <input type="file" name="image"><br>
-    <button type="submit">Upload Post</button>
-  </form>
+  <div class="container">
+    <!-- New Post -->
+    <div class="card">
+      <h2>Create a New Post</h2>
+      <form method="POST" enctype="multipart/form-data">
+        <input name="title" placeholder="Post Title">
+        <textarea name="content" placeholder="Post Content"></textarea>
+        <input type="file" name="image">
+        <button type="submit">Upload Post</button>
+      </form>
+    </div>
 
-  <h2>Add a New Service</h2>
-  <form method="POST">
-    <input name="new_service" placeholder="Service Name"><br>
-    <input name="new_price" placeholder="Price" type="number"><br>
-    <button type="submit">Add Service</button>
-  </form>
+    <!-- Add Service -->
+    <div class="card">
+      <h2>Add a New Service</h2>
+      <form method="POST">
+        <input name="new_service" placeholder="Service Name">
+        <input name="new_price" type="number" placeholder="Price">
+        <button type="submit">Add Service</button>
+      </form>
+    </div>
 
-  <h2>Update Service Price</h2>
-  <form method="POST">
-    <select name="update_service">
-      {% for service, price in services.items() %}
-        <option value="{{ service }}">{{ service }} (${{ price }})</option>
-      {% endfor %}
-    </select><br>
-    <input name="updated_price" placeholder="New Price" type="number"><br>
-    <button type="submit">Update Price</button>
-  </form>
+    <!-- Update Price -->
+    <div class="card">
+      <h2>Update Service Price</h2>
+      <form method="POST">
+        <select name="update_service">
+          {% for service, price in services.items() %}
+            <option value="{{ service }}">{{ service }} (${{ price }})</option>
+          {% endfor %}
+        </select>
+        <input name="updated_price" type="number" placeholder="New Price">
+        <button type="submit">Update Price</button>
+      </form>
+    </div>
+  </div>
 
-  <hr>
-  <h2>Current Posts</h2>
-  {% for post in posts %}
-    <h3>{{ post.title }}</h3>
-    <p>{{ post.content }}</p>
-    {% if post.image %}
-      <img src="{{ url_for('static', filename='uploads/' + post.image) }}" width="300">
-    {% endif %}
-  {% endfor %}
+  <!-- Current Posts -->
+  <div class="posts">
+    <h2>Current Posts</h2>
+    {% for post in posts %}
+      <div class="post">
+        <h3>{{ post.title }}</h3>
+        <p>{{ post.content }}</p>
+        {% if post.image %}
+          <img src="{{ url_for('static', filename='uploads/' + post.image) }}">
+        {% endif %}
+      </div>
+      <hr>
+    {% endfor %}
+  </div>
 </body>
 </html>
