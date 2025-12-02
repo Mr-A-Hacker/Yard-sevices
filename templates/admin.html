@@ -30,6 +30,19 @@
     </form>
   </div>
 
+  <!-- Delete Service -->
+<div class="card">
+  <h2 style="color:#e74c3c;">Delete a Service</h2>
+  <form method="POST">
+    <select name="delete_service">
+      {% for service, price in services.items() %}
+        <option value="{{ service }}">{{ service }} (${{ price }})</option>
+      {% endfor %}
+    </select>
+    <button type="submit" style="background:#e74c3c; color:white;">Delete Service</button>
+  </form>
+</div>
+
   <!-- Update Price -->
   <div class="card">
     <h2 style="color:#1abc9c;">Update Service Price</h2>
