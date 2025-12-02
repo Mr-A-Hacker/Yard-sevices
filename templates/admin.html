@@ -5,33 +5,38 @@
 {% block content %}
 <header style="padding:40px 20px; text-align:center;">
   <h1 style="margin:0; font-size:36px; color:#1abc9c;">Admin Dashboard</h1>
-  <p style="font-size:18px; color:#ecf0f1;">Manage posts, services, and customer requests</p>
+  <p style="font-size:18px; color:#ecf0f1;">Manage posts, services, customer requests, and busy days</p>
 </header>
 
 <div class="container" style="display:flex; justify-content:space-around; margin:30px; flex-wrap:wrap;">
   <!-- New Post -->
-  <div class="card" style="background:rgba(255,255,255,0.1); padding:20px; border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,0.3); width:30%; min-width:280px; margin:15px; animation:fadeIn 1s ease-in-out;">
+  <div class="card" style="background:rgba(255,255,255,0.1); padding:20px; border-radius:12px; 
+       box-shadow:0 8px 25px rgba(0,0,0,0.3); width:30%; min-width:280px; margin:15px; animation:fadeIn 1s ease-in-out;">
     <h2 style="color:#1abc9c;">Create a New Post</h2>
     <form method="POST" enctype="multipart/form-data">
       <input name="title" placeholder="Post Title" style="width:100%; padding:10px; margin:8px 0; border-radius:8px; border:none;">
       <textarea name="content" placeholder="Post Content" style="width:100%; padding:10px; margin:8px 0; border-radius:8px; border:none;"></textarea>
       <input type="file" name="image">
-      <button type="submit" style="background:#3498db; color:white; border:none; padding:12px; border-radius:8px; cursor:pointer; width:100%; font-size:15px; transition:0.3s;">Upload Post</button>
+      <button type="submit" style="background:#3498db; color:white; border:none; padding:12px; border-radius:8px; 
+              cursor:pointer; width:100%; font-size:15px; transition:0.3s;">Upload Post</button>
     </form>
   </div>
 
   <!-- Add Service -->
-  <div class="card" style="background:rgba(255,255,255,0.1); padding:20px; border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,0.3); width:30%; min-width:280px; margin:15px; animation:fadeIn 1s ease-in-out;">
+  <div class="card" style="background:rgba(255,255,255,0.1); padding:20px; border-radius:12px; 
+       box-shadow:0 8px 25px rgba(0,0,0,0.3); width:30%; min-width:280px; margin:15px; animation:fadeIn 1s ease-in-out;">
     <h2 style="color:#1abc9c;">Add a New Service</h2>
     <form method="POST">
       <input name="new_service" placeholder="Service Name" style="width:100%; padding:10px; margin:8px 0; border-radius:8px; border:none;">
       <input name="new_price" type="number" placeholder="Price" style="width:100%; padding:10px; margin:8px 0; border-radius:8px; border:none;">
-      <button type="submit" style="background:#3498db; color:white; border:none; padding:12px; border-radius:8px; cursor:pointer; width:100%; font-size:15px; transition:0.3s;">Add Service</button>
+      <button type="submit" style="background:#3498db; color:white; border:none; padding:12px; border-radius:8px; 
+              cursor:pointer; width:100%; font-size:15px; transition:0.3s;">Add Service</button>
     </form>
   </div>
 
   <!-- Update Price -->
-  <div class="card" style="background:rgba(255,255,255,0.1); padding:20px; border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,0.3); width:30%; min-width:280px; margin:15px; animation:fadeIn 1s ease-in-out;">
+  <div class="card" style="background:rgba(255,255,255,0.1); padding:20px; border-radius:12px; 
+       box-shadow:0 8px 25px rgba(0,0,0,0.3); width:30%; min-width:280px; margin:15px; animation:fadeIn 1s ease-in-out;">
     <h2 style="color:#1abc9c;">Update Service Price</h2>
     <form method="POST">
       <select name="update_service" style="width:100%; padding:10px; margin:8px 0; border-radius:8px; border:none;">
@@ -40,13 +45,25 @@
         {% endfor %}
       </select>
       <input name="updated_price" type="number" placeholder="New Price" style="width:100%; padding:10px; margin:8px 0; border-radius:8px; border:none;">
-      <button type="submit" style="background:#3498db; color:white; border:none; padding:12px; border-radius:8px; cursor:pointer; width:100%; font-size:15px; transition:0.3s;">Update Price</button>
+      <button type="submit" style="background:#3498db; color:white; border:none; padding:12px; border-radius:8px; 
+              cursor:pointer; width:100%; font-size:15px; transition:0.3s;">Update Price</button>
+    </form>
+  </div>
+
+  <!-- Mark Busy Day -->
+  <div class="card" style="background:rgba(255,255,255,0.1); padding:20px; border-radius:12px; 
+       box-shadow:0 8px 25px rgba(0,0,0,0.3); width:30%; min-width:280px; margin:15px; animation:fadeIn 1s ease-in-out;">
+    <h2 style="color:#e74c3c;">Mark Busy Day</h2>
+    <form method="POST">
+      <input type="date" name="busy_day" required style="width:100%; padding:10px; margin:8px 0; border-radius:8px; border:none;">
+      <button type="submit" style="background:#e74c3c; color:white; border:none; padding:12px; border-radius:8px; 
+              cursor:pointer; width:100%; font-size:15px;">Block This Day</button>
     </form>
   </div>
 </div>
-
 <!-- Current Posts -->
-<div class="posts" style="max-width:1000px; margin:30px auto; background:rgba(255,255,255,0.1); padding:20px; border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,0.3);">
+<div class="posts" style="max-width:1000px; margin:30px auto; background:rgba(255,255,255,0.1); 
+     padding:20px; border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,0.3);">
   <h2>Current Posts</h2>
   {% for post in posts %}
     <div class="post" style="margin-bottom:20px; animation:fadeIn 1s ease-in-out;">
@@ -60,8 +77,19 @@
   {% endfor %}
 </div>
 
+<!-- Busy Days List -->
+<div class="submissions" style="max-width:1000px; margin:30px auto; background:rgba(255,255,255,0.1); 
+     padding:20px; border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,0.3);">
+  <h2>Busy Days</h2>
+  <ul style="list-style:none; padding:0;">
+    {% for day in busy_days %}
+      <li style="padding:8px; margin:5px 0; background:rgba(255,255,255,0.05); border-radius:6px;">📅 {{ day }}</li>
+    {% endfor %}
+  </ul>
+</div>
 <!-- Submissions Table -->
-<div class="submissions" style="max-width:1000px; margin:30px auto; background:rgba(255,255,255,0.1); padding:20px; border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,0.3);">
+<div class="submissions" style="max-width:1000px; margin:30px auto; background:rgba(255,255,255,0.1); 
+     padding:20px; border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,0.3);">
   <h2>Service Requests</h2>
   <table style="width:100%; border-collapse:collapse; margin-top:15px;">
     <tr>
@@ -70,6 +98,7 @@
       <th style="color:#1abc9c; padding:10px; text-align:left;">Phone</th>
       <th style="color:#1abc9c; padding:10px; text-align:left;">Service</th>
       <th style="color:#1abc9c; padding:10px; text-align:left;">Cost</th>
+      <th style="color:#1abc9c; padding:10px; text-align:left;">Day</th>
       <th style="color:#1abc9c; padding:10px; text-align:left;">Time</th>
     </tr>
     {% for sub in submissions %}
@@ -79,6 +108,7 @@
       <td style="padding:10px;">{{ sub.phone }}</td>
       <td style="padding:10px;">{{ sub.service }}</td>
       <td style="padding:10px;">${{ sub.cost }}</td>
+      <td style="padding:10px;">{{ sub.day }}</td>
       <td style="padding:10px;">{{ sub.time }}</td>
     </tr>
     {% endfor %}
