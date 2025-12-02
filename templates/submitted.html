@@ -1,10 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Submitted</title>
+  <title>Request Submitted</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .box {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 400px;
+    }
+    h2 {
+      color: #2ecc71;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 18px;
+      color: #34495e;
+    }
+    .back {
+      margin-top: 20px;
+      display: inline-block;
+      padding: 10px 20px;
+      background: #3498db;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    .back:hover {
+      background: #2980b9;
+    }
+  </style>
 </head>
 <body>
-  <h2>Thank you!</h2>
-  <p>Your request has been submitted. Total cost: ${{ cost }}</p>
+  <div class="box">
+    <h2>✅ Request Submitted!</h2>
+    <p>Thank you for choosing Yard Services.</p>
+    <p>Your total cost: <strong>${{ cost }}</strong></p>
+    <a class="back" href="/">Return to Home</a>
+  </div>
 </body>
 </html>
