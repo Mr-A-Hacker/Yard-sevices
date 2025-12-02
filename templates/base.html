@@ -1,57 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>{% block title %}Yard Services{% endblock %}</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #2c3e50, #34495e);
-      margin: 0;
-      padding: 0;
-      color: white;
-    }
-    nav {
-      background: rgba(0,0,0,0.7);
-      padding: 15px;
-      text-align: center;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    nav a {
-      color: #ecf0f1;
-      text-decoration: none;
-      margin: 0 15px;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-    nav a:hover {
-      color: #1abc9c;
-      transform: scale(1.1);
-    }
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(-20px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>{% block title %}{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+  <!-- Favicon (yard logo in tab) -->
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
 </head>
-<body>
-  <!-- Shared Navbar -->
-  <nav>
-    <a href="/">Home</a>
-    {% if logged_in %}
-      <a href="/get-started">Get Started</a>
-      {% if session['user'] == 'admin' %}
-        <a href="/admin">Admin</a>
+<body style="margin:0; font-family:Arial, sans-serif; background:#2c3e50; color:white;">
+
+  <!-- Navbar -->
+  <nav style="background:#1abc9c; padding:15px; display:flex; justify-content:space-between; align-items:center;">
+    <div style="font-size:20px; font-weight:bold;">
+      🌱 Yard Services
+    </div>
+    <div>
+      <a href="{{ url_for('home') }}" style="color:white; margin:0 10px; text-decoration:none;">Home</a>
+      <a href="{{ url_for('get_started') }}" style="color:white; margin:0 10px; text-decoration:none;">Get Started</a>
+      {% if logged_in %}
+        {% if session['user'] == 'admin' %}
+          <a href="{{ url_for('admin') }}" style="color:white; margin:0 10px; text-decoration:none;">Admin</a>
+        {% endif %}
+        <a href="{{ url_for('logout') }}" style="color:white; margin:0 10px; text-decoration:none;">Logout</a>
+      {% else %}
+        <a href="{{ url_for('login') }}" style="color:white; margin:0 10px; text-decoration:none;">Login</a>
       {% endif %}
-      <a href="/logout">Logout</a>
-    {% else %}
-      <a href="/login">Login</a>
-      <a href="/signup">Sign Up</a>
-    {% endif %}
+    </div>
   </nav>
 
-  <!-- Page-specific content -->
-  {% block content %}{% endblock %}
+  <!-- Page Content -->
+  <main style="padding:20px;">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer style="background:#1abc9c; padding:15px; text-align:center; margin-top:40px;">
+    <p style="margin:0;">&copy; 2025 Yard Services. All rights reserved.</p>
+  </footer>
 </body>
 </html>
