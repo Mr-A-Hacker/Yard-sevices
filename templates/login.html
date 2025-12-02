@@ -1,104 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Login</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #3498db, #2c3e50);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    nav {
-      position: absolute;
-      top: 0;
-      width: 100%;
-      background: rgba(0,0,0,0.6);
-      padding: 15px;
-      text-align: center;
-    }
-    nav a {
-      color: #ecf0f1;
-      text-decoration: none;
-      margin: 0 15px;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-    nav a:hover {
-      color: #1abc9c;
-      transform: scale(1.1);
-    }
-    .card {
-      background: rgba(255,255,255,0.95);
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-      text-align: center;
-      width: 350px;
-      animation: fadeIn 1s ease-in-out;
-    }
-    h2 {
-      margin-bottom: 20px;
-      color: #2c3e50;
-    }
-    input {
-      width: 90%;
-      padding: 12px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 14px;
-    }
-    button {
-      width: 95%;
-      padding: 12px;
-      background: #3498db;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: #2980b9;
-      transform: scale(1.05);
-    }
-    p {
-      margin-top: 15px;
-      font-size: 14px;
-    }
-    a {
-      color: #1abc9c;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(-20px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-  </style>
-</head>
-<body>
-  <nav>
-    <a href="/">Home</a>
-    <a href="/login">Login</a>
-    <a href="/signup">Sign Up</a>
-  </nav>
+{% extends "base.html" %}
 
-  <div class="card">
-    <h2>Login</h2>
-    <form method="POST" action="/login">
-      <input type="text" name="username" placeholder="Enter your username or email" required><br>
-      <input type="password" name="password" placeholder="Enter your password" required><br>
-      <button type="submit">Login</button>
-    </form>
-    <p>Don’t have an account? <a href="/signup">Sign up here</a></p>
-  </div>
-</body>
-</html>
+{% block title %}Login - Yard Services{% endblock %}
+
+{% block content %}
+<div class="card" style="margin:auto; margin-top:80px; background:rgba(255,255,255,0.95); padding:40px; border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,0.3); width:350px; text-align:center;">
+  <h2 style="color:#2c3e50;">Login</h2>
+  <form method="POST" action="/login">
+    <input type="text" name="username" placeholder="Enter your username or email" required><br>
+    <input type="password" name="password" placeholder="Enter your password" required><br>
+    <button type="submit" style="width:95%; padding:12px; background:#3498db; color:white; border:none; border-radius:8px; font-size:16px; cursor:pointer; transition:0.3s;">Login</button>
+  </form>
+  <p style="margin-top:15px;">Don’t have an account? <a href="/signup">Sign up here</a></p>
+</div>
+{% endblock %}
