@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 app = Flask(__name__)
 app.secret_key = "supersecretkey"  # change this in production
 
-# --- Fake in-memory storage (replace with database later) ---
+# --- In-memory storage (replace with database later) ---
 users = {}
 services = {"Lawn Care": 50, "Snow Removal": 75, "Leaf Cleanup": 40}
 posts = []
@@ -12,7 +12,9 @@ submissions = []
 # --- Routes ---
 @app.route("/")
 def home():
-    return render_template("home.html", logged_in="user" in session, posts=posts)
+    return render_template("home.html",
+                           logged_in="user" in session,
+                           posts=posts)
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -29,7 +31,7 @@ def signup():
         users[username] = {"email": email, "password": password}
         session["user"] = username
         return redirect(url_for("home"))
-    return render_template("signup.html")
+    return render_template("signup.html", logged_in="user" in session)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -41,7 +43,7 @@ def login():
             session["user"] = username
             return redirect(url_for("home"))
         return "Invalid credentials!"
-    return render_template("login.html")
+    return render_template("login.html", logged_in="user" in session)
 
 @app.route("/logout")
 def logout():
@@ -67,9 +69,13 @@ def get_started():
             "cost": cost,
             "time": "Now"  # placeholder
         })
-        return render_template("submitted.html", cost=cost, logged_in=True)
+        return render_template("submitted.html",
+                               cost=cost,
+                               logged_in=True)
 
-    return render_template("get_started.html", services=services, logged_in=True)
+    return render_template("get_started.html",
+                           services=services,
+                           logged_in=True)
 
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
@@ -91,7 +97,11 @@ def admin():
         elif "update_service" in request.form:
             services[request.form["update_service"]] = int(request.form["updated_price"])
 
-    return render_template("admin.html", services=services, posts=posts, submissions=submissions, logged_in=True)
+    return render_template("admin.html",
+                           services=services,
+                           posts=posts,
+                           submissions=submissions,
+                           logged_in=True)
 
 # --- Run ---
 if __name__ == "__main__":
