@@ -103,6 +103,18 @@ def admin():
             if 0 <= index < len(posts):
                 posts.pop(index)
 
+        # Delete service
+        elif "delete_service" in request.form:
+            service_to_delete = request.form["delete_service"]
+            if service_to_delete in services:
+                services.pop(service_to_delete)
+
+        # Delete submission
+        elif "delete_submission" in request.form:
+            index = int(request.form["delete_submission"])
+            if 0 <= index < len(submissions):
+                submissions.pop(index)
+
     return render_template("admin.html", posts=posts, services=services,
                            submissions=submissions, busy_days=busy_days)
 
