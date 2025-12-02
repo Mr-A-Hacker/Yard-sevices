@@ -1,108 +1,104 @@
 from flask import Flask, render_template, request, redirect, url_for, session
+import os
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"  # change this in production
+app.secret_key = "supersecretkey"
 
-# --- In-memory storage (replace with database later) ---
-users = {}
-services = {"Lawn Care": 50, "Snow Removal": 75, "Leaf Cleanup": 40}
+# Data stores
 posts = []
+services = {"Lawn Care": 10, "Snow Removal": 20, "Leaf Cleanup": 15}
 submissions = []
+busy_days = []  # admin-blocked dates
 
-# --- Routes ---
+# Routes
 @app.route("/")
 def home():
-    return render_template("home.html",
-                           logged_in="user" in session,
-                           posts=posts)
+    return render_template("home.html", posts=posts, logged_in=("user" in session))
 
-@app.route("/signup", methods=["GET", "POST"])
-def signup():
+@app.route("/get-started", methods=["GET", "POST"])
+def get_started():
     if request.method == "POST":
-        username = request.form["username"]
-        email = request.form["email"]
-        password = request.form["password"]
-        confirm = request.form["confirm_password"]
+        address = request.form["address"]
+        phone = request.form["phone"]
+        service = request.form["service"]
+        day = request.form["day"]
+        time = request.form["time"]
 
-        if password != confirm:
-            return "Passwords do not match!"
-        if username in users:
-            return "User already exists!"
-        users[username] = {"email": email, "password": password}
-        session["user"] = username
-        return redirect(url_for("home"))
-    return render_template("signup.html", logged_in="user" in session)
+        # Check if day is blocked
+        if day in busy_days:
+            return "Sorry, this day is unavailable. Please choose another."
+
+        cost = services[service]
+        submissions.append({
+            "user": session.get("user", "Guest"),
+            "address": address,
+            "phone": phone,
+            "service": service,
+            "day": day,
+            "time": time,
+            "cost": cost
+        })
+        return render_template("submitted.html", cost=cost, logged_in=("user" in session))
+
+    return render_template("get_started.html", services=services, logged_in=("user" in session))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-
-        if username in users and users[username]["password"] == password:
+        if username == "admin" and password == "admin":
+            session["user"] = "admin"
+            return redirect(url_for("admin"))
+        else:
             session["user"] = username
             return redirect(url_for("home"))
-        return "Invalid credentials!"
-    return render_template("login.html", logged_in="user" in session)
+    return render_template("login.html")
 
 @app.route("/logout")
 def logout():
     session.pop("user", None)
     return redirect(url_for("home"))
 
-@app.route("/get-started", methods=["GET", "POST"])
-def get_started():
-    if "user" not in session:
-        return redirect(url_for("login"))
-
-    if request.method == "POST":
-        address = request.form["address"]
-        phone = request.form["phone"]
-        service = request.form["service"]
-        cost = services[service]
-
-        submissions.append({
-            "user": session["user"],
-            "address": address,
-            "phone": phone,
-            "service": service,
-            "cost": cost,
-            "time": "Now"  # placeholder
-        })
-        return render_template("submitted.html",
-                               cost=cost,
-                               logged_in=True)
-
-    return render_template("get_started.html",
-                           services=services,
-                           logged_in=True)
-
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
     if "user" not in session or session["user"] != "admin":
-        return redirect(url_for("home"))
+        return redirect(url_for("login"))
 
     if request.method == "POST":
-        # Handle new post
-        if "title" in request.form:
-            posts.append({
-                "title": request.form["title"],
-                "content": request.form["content"],
-                "image": None  # skip image upload for now
-            })
-        # Handle new service
-        elif "new_service" in request.form:
-            services[request.form["new_service"]] = int(request.form["new_price"])
-        # Handle price update
-        elif "update_service" in request.form:
-            services[request.form["update_service"]] = int(request.form["updated_price"])
+        # New post
+        if "title" in request.form and "content" in request.form:
+            title = request.form["title"]
+            content = request.form["content"]
+            image = None
+            if "image" in request.files and request.files["image"].filename != "":
+                image_file = request.files["image"]
+                image = image_file.filename
+                upload_path = os.path.join("static/uploads", image)
+                os.makedirs(os.path.dirname(upload_path), exist_ok=True)
+                image_file.save(upload_path)
+            posts.append({"title": title, "content": content, "image": image})
 
-    return render_template("admin.html",
-                           services=services,
-                           posts=posts,
-                           submissions=submissions,
-                           logged_in=True)
+        # Add new service
+        elif "new_service" in request.form and "new_price" in request.form:
+            new_service = request.form["new_service"]
+            new_price = int(request.form["new_price"])
+            services[new_service] = new_price
 
-# --- Run ---
+        # Update price
+        elif "update_service" in request.form and "updated_price" in request.form:
+            update_service = request.form["update_service"]
+            updated_price = int(request.form["updated_price"])
+            services[update_service] = updated_price
+
+        # Block busy day
+        elif "busy_day" in request.form:
+            busy_day = request.form["busy_day"]
+            if busy_day not in busy_days:
+                busy_days.append(busy_day)
+
+    return render_template("admin.html", posts=posts, services=services,
+                           submissions=submissions, busy_days=busy_days)
+
 if __name__ == "__main__":
     app.run(debug=True)
