@@ -23,7 +23,7 @@
         {% if session['user'] == 'admin' %}
           <a href="{{ url_for('admin') }}">Admin</a>
         {% endif %}
-        <a href="{{ url_for('logout') }}">Logout</a>
+        <a href="{{ url_for('logout') }}">Log Out</a>
       {% else %}
         <a href="{{ url_for('login') }}">Login</a>
       {% endif %}
