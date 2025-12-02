@@ -14,21 +14,18 @@
 <body style="margin:0; font-family:Arial, sans-serif; background:#2c3e50; color:white;
              display:flex; flex-direction:column; min-height:100vh;">
 
-  <!-- Navbar -->
-  <nav style="background:#1abc9c; padding:15px; display:flex; justify-content:space-between; align-items:center;">
-    <div style="font-size:20px; font-weight:bold;">
-      🌱 Yard Services
-    </div>
-    <div>
-      <a href="{{ url_for('home') }}" style="color:white; margin:0 10px; text-decoration:none;">Home</a>
-      <a href="{{ url_for('get_started') }}" style="color:white; margin:0 10px; text-decoration:none;">Get Started</a>
+  <!-- Bubble Navbar -->
+  <nav class="bubble-nav">
+    <div class="nav-links">
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('get_started') }}">Get Started</a>
       {% if logged_in %}
         {% if session['user'] == 'admin' %}
-          <a href="{{ url_for('admin') }}" style="color:white; margin:0 10px; text-decoration:none;">Admin</a>
+          <a href="{{ url_for('admin') }}">Admin</a>
         {% endif %}
-        <a href="{{ url_for('logout') }}" style="color:white; margin:0 10px; text-decoration:none;">Logout</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
       {% else %}
-        <a href="{{ url_for('login') }}" style="color:white; margin:0 10px; text-decoration:none;">Login</a>
+        <a href="{{ url_for('login') }}">Login</a>
       {% endif %}
     </div>
   </nav>
