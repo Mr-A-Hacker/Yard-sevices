@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Yard Services</title>
+</head>
+<body>
+  <h1>Welcome to Yard Services</h1>
+
+  {% if logged_in %}
+    <a href="/get-started">Get Started Now</a> | <a href="/logout">Logout</a>
+  {% else %}
+    <a href="/login">Login or Sign Up</a>
+  {% endif %}
+
+  <hr>
+  <h2>Latest Updates</h2>
+  {% for post in posts %}
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.content }}</p>
+    {% if post.image %}
+      <img src="{{ url_for('static', filename='uploads/' + post.image) }}" width="300">
+    {% endif %}
+  {% endfor %}
+</body>
+</html>
