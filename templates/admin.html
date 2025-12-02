@@ -108,6 +108,7 @@
       <th>Cost</th>
       <th>Day</th>
       <th>Time</th>
+      <th>Note</th>
       <th>Action</th>
     </tr>
     {% for sub in submissions %}
@@ -119,6 +120,7 @@
       <td>${{ sub.cost }}</td>
       <td>{{ sub.day }}</td>
       <td>{{ sub.time }}</td>
+      <td>{{ sub.note }}</td>
       <td>
         <form method="POST">
           <input type="hidden" name="delete_submission" value="{{ loop.index0 }}">
