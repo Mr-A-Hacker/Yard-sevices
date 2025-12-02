@@ -18,6 +18,7 @@ service_prices = {
     'Snow removal': 15,
     'Raking': 10
 }
+submissions = []  # store service requests
 
 # Helpers
 def allowed_file(filename):
@@ -70,7 +71,10 @@ def admin():
             if name in service_prices:
                 service_prices[name] = new_price
 
-    return render_template('admin.html', posts=admin_posts, services=service_prices)
+    return render_template('admin.html',
+                           posts=admin_posts,
+                           services=service_prices,
+                           submissions=submissions)
 
 @app.route('/get-started', methods=['GET', 'POST'])
 def get_started():
@@ -84,8 +88,20 @@ def get_started():
         cost = service_prices.get(service, 0)
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-        # Simulated admin log
-        print(f"[{timestamp}] Request from {session['user']}: {service} for ${cost} at {address}, {phone}")
+        # Save submission
+        submissions.append({
+            'user': session['user'],
+            'address': address,
+            'phone': phone,
+            'service': service,
+            'cost': cost,
+            'time': timestamp
+        })
+
         return render_template('submitted.html', cost=cost)
 
     return render_template('get_started.html', services=service_prices)
+
+# Run locally
+if __name__ == '__main__':
+    app.run(debug=True)
