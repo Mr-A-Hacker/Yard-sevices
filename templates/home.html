@@ -10,19 +10,39 @@
       padding: 0;
       color: white;
     }
+    nav {
+      background: rgba(0,0,0,0.7);
+      padding: 15px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    nav a {
+      color: #ecf0f1;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    nav a:hover {
+      color: #1abc9c;
+      transform: scale(1.1);
+    }
     header {
-      background: rgba(0,0,0,0.6);
-      padding: 40px;
+      padding: 60px 20px;
       text-align: center;
     }
     header h1 {
       margin: 0;
-      font-size: 36px;
+      font-size: 42px;
       color: #1abc9c;
+      animation: fadeIn 1s ease-in-out;
     }
     header p {
-      font-size: 18px;
+      font-size: 20px;
       color: #ecf0f1;
+      margin-top: 10px;
     }
     .buttons {
       text-align: center;
@@ -31,7 +51,7 @@
     .buttons a {
       display: inline-block;
       margin: 10px;
-      padding: 12px 24px;
+      padding: 14px 28px;
       background: #3498db;
       color: white;
       text-decoration: none;
@@ -44,30 +64,59 @@
       transform: scale(1.05);
     }
     .posts {
-      max-width: 800px;
+      max-width: 900px;
       margin: 40px auto;
       background: rgba(255,255,255,0.1);
-      padding: 20px;
-      border-radius: 10px;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
     }
     .post {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+      animation: fadeIn 1s ease-in-out;
     }
     .post h3 {
       color: #1abc9c;
+      margin-bottom: 8px;
     }
     .post img {
       max-width: 100%;
-      border-radius: 5px;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.2);
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(-20px);}
+      to {opacity: 1; transform: translateY(0);}
     }
   </style>
 </head>
 <body>
+  <!-- Navbar -->
+  <nav>
+    <a href="/">Home</a>
+    {% if logged_in %}
+      <a href="/get-started">Get Started</a>
+      {% if session['user'] == 'admin' %}
+        <a href="/admin">Admin</a>
+      {% endif %}
+      <a href="/logout">Logout</a>
+    {% else %}
+      <a href="/login">Login</a>
+      <a href="/signup">Sign Up</a>
+    {% endif %}
+  </nav>
+
+  <!-- Hero Header -->
   <header>
     <h1>Welcome to Yard Services</h1>
     <p>Reliable lawn care, snow removal, and more</p>
   </header>
 
+  <!-- Action Buttons -->
   <div class="buttons">
     {% if logged_in %}
       <a href="/get-started">Get Started Now</a>
@@ -78,6 +127,7 @@
     {% endif %}
   </div>
 
+  <!-- Posts Section -->
   <div class="posts">
     <h2>Latest Updates</h2>
     {% for post in posts %}
