@@ -10,15 +10,37 @@
       padding: 0;
       color: white;
     }
-    header {
+    nav {
       background: rgba(0,0,0,0.7);
-      padding: 30px;
+      padding: 15px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    nav a {
+      color: #ecf0f1;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    nav a:hover {
+      color: #1abc9c;
+      transform: scale(1.1);
+    }
+    header {
+      padding: 40px 20px;
       text-align: center;
     }
     header h1 {
       margin: 0;
-      font-size: 32px;
+      font-size: 36px;
       color: #1abc9c;
+    }
+    header p {
+      font-size: 18px;
+      color: #ecf0f1;
     }
     .container {
       display: flex;
@@ -88,6 +110,9 @@
     table th {
       color: #1abc9c;
     }
+    table tr:hover {
+      background: rgba(255,255,255,0.05);
+    }
     @keyframes fadeIn {
       from {opacity: 0; transform: translateY(-20px);}
       to {opacity: 1; transform: translateY(0);}
@@ -95,11 +120,21 @@
   </style>
 </head>
 <body>
+  <!-- Navbar -->
+  <nav>
+    <a href="/">Home</a>
+    <a href="/get-started">Get Started</a>
+    <a href="/admin">Admin</a>
+    <a href="/logout">Logout</a>
+  </nav>
+
+  <!-- Header -->
   <header>
     <h1>Admin Dashboard</h1>
     <p>Manage posts, services, and customer requests</p>
   </header>
 
+  <!-- Control Cards -->
   <div class="container">
     <!-- New Post -->
     <div class="card">
