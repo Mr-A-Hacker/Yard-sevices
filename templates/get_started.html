@@ -3,25 +3,35 @@
 {% block title %}Get Started - Yard Services{% endblock %}
 
 {% block content %}
-<div class="card" style="margin:auto; margin-top:80px; background:rgba(255,255,255,0.1); padding:40px; border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,0.3); width:400px; color:white;">
+<div class="card" style="margin:auto; margin-top:80px; background:rgba(255,255,255,0.1); padding:40px; border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,0.3); width:420px; color:white;">
   <h2 style="text-align:center; color:#1abc9c;">Service Request</h2>
   <form method="POST" action="/get-started">
+    <!-- Address -->
     <input name="address" placeholder="Your Address" required 
            style="width:100%; padding:12px; margin:10px 0; border-radius:8px; border:none;"><br>
+    <!-- Phone -->
     <input name="phone" placeholder="Phone Number" required 
            style="width:100%; padding:12px; margin:10px 0; border-radius:8px; border:none;"><br>
-    
+    <!-- Service -->
     <select name="service" id="service-select" onchange="updateTotal()" required 
             style="width:100%; padding:12px; margin:10px 0; border-radius:8px; border:none;">
       {% for service, price in services.items() %}
         <option value="{{ service }}">{{ service }} (${{ price }})</option>
       {% endfor %}
     </select>
+    <!-- Day -->
+    <input type="date" name="day" required 
+           style="width:100%; padding:12px; margin:10px 0; border-radius:8px; border:none;">
+    <!-- Time -->
+    <input type="time" name="time" required 
+           style="width:100%; padding:12px; margin:10px 0; border-radius:8px; border:none;">
     
+    <!-- Total -->
     <div id="total-display" style="text-align:center; margin-top:10px; font-weight:bold;">
       Total: $0
     </div>
     
+    <!-- Submit -->
     <button type="submit" 
             style="width:100%; padding:12px; background:#3498db; color:white; border:none; border-radius:8px; cursor:pointer; transition:0.3s;">
       Submit Request
