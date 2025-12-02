@@ -4,69 +4,100 @@
   <title>Admin Dashboard</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f7f9fc;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #2c3e50, #34495e);
       margin: 0;
       padding: 0;
+      color: white;
     }
     header {
-      background: #2c3e50;
-      color: white;
-      padding: 20px;
+      background: rgba(0,0,0,0.7);
+      padding: 30px;
       text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 32px;
+      color: #1abc9c;
     }
     .container {
       display: flex;
       justify-content: space-around;
-      margin: 20px;
+      margin: 30px;
+      flex-wrap: wrap;
     }
     .card {
-      background: white;
+      background: rgba(255,255,255,0.1);
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
       width: 30%;
+      min-width: 280px;
+      margin: 15px;
+      animation: fadeIn 1s ease-in-out;
     }
     h2 {
       margin-top: 0;
-      color: #34495e;
+      color: #1abc9c;
     }
     input, textarea, select {
       width: 100%;
       padding: 10px;
       margin: 8px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
     }
     button {
       background: #3498db;
       color: white;
       border: none;
-      padding: 10px;
-      border-radius: 5px;
+      padding: 12px;
+      border-radius: 8px;
       cursor: pointer;
       width: 100%;
+      font-size: 15px;
+      transition: 0.3s;
     }
     button:hover {
       background: #2980b9;
+      transform: scale(1.05);
     }
-    .posts {
-      margin: 20px;
-      background: white;
+    .posts, .submissions {
+      max-width: 1000px;
+      margin: 30px auto;
+      background: rgba(255,255,255,0.1);
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
     }
     .post img {
       max-width: 100%;
       border-radius: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    table th, table td {
+      padding: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      text-align: left;
+    }
+    table th {
+      color: #1abc9c;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(-20px);}
+      to {opacity: 1; transform: translateY(0);}
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Admin Dashboard</h1>
-    <p>Manage posts, services, and pricing</p>
+    <p>Manage posts, services, and customer requests</p>
   </header>
 
   <div class="container">
@@ -119,6 +150,31 @@
       </div>
       <hr>
     {% endfor %}
+  </div>
+
+  <!-- Submissions Table -->
+  <div class="submissions">
+    <h2>Service Requests</h2>
+    <table>
+      <tr>
+        <th>User</th>
+        <th>Address</th>
+        <th>Phone</th>
+        <th>Service</th>
+        <th>Cost</th>
+        <th>Time</th>
+      </tr>
+      {% for sub in submissions %}
+      <tr>
+        <td>{{ sub.user }}</td>
+        <td>{{ sub.address }}</td>
+        <td>{{ sub.phone }}</td>
+        <td>{{ sub.service }}</td>
+        <td>${{ sub.cost }}</td>
+        <td>{{ sub.time }}</td>
+      </tr>
+      {% endfor %}
+    </table>
   </div>
 </body>
 </html>
