@@ -6,25 +6,40 @@
 <div class="card" style="margin:auto; margin-top:80px; background:rgba(255,255,255,0.1); padding:40px; border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,0.3); width:400px; color:white;">
   <h2 style="text-align:center; color:#1abc9c;">Service Request</h2>
   <form method="POST" action="/get-started">
-    <input name="address" placeholder="Your Address" required style="width:100%; padding:12px; margin:10px 0; border-radius:8px; border:none;"><br>
-    <input name="phone" placeholder="Phone Number" required style="width:100%; padding:12px; margin:10px 0; border-radius:8px; border:none;"><br>
-    <select name="service" id="service-select" onchange="updateTotal()" required style="width:100%; padding:12px; margin:10px 0; border-radius:8px; border:none;">
+    <input name="address" placeholder="Your Address" required 
+           style="width:100%; padding:12px; margin:10px 0; border-radius:8px; border:none;"><br>
+    <input name="phone" placeholder="Phone Number" required 
+           style="width:100%; padding:12px; margin:10px 0; border-radius:8px; border:none;"><br>
+    
+    <select name="service" id="service-select" onchange="updateTotal()" required 
+            style="width:100%; padding:12px; margin:10px 0; border-radius:8px; border:none;">
       {% for service, price in services.items() %}
         <option value="{{ service }}">{{ service }} (${{ price }})</option>
       {% endfor %}
     </select>
+    
     <div id="total-display" style="text-align:center; margin-top:10px; font-weight:bold;">
-      Total: ${{ services.values()|list()[0] }}
+      Total: $0
     </div>
-    <button type="submit" style="width:100%; padding:12px; background:#3498db; color:white; border:none; border-radius:8px; cursor:pointer; transition:0.3s;">Submit Request</button>
+    
+    <button type="submit" 
+            style="width:100%; padding:12px; background:#3498db; color:white; border:none; border-radius:8px; cursor:pointer; transition:0.3s;">
+      Submit Request
+    </button>
   </form>
 </div>
 
 <script>
-  const prices = { {% for service, price in services.items() %}"{{ service }}": {{ price }},{% endfor %} };
+  const prices = {
+    {% for service, price in services.items() %}
+      "{{ service }}": {{ price }},
+    {% endfor %}
+  };
   function updateTotal() {
     const selected = document.getElementById('service-select').value;
     document.getElementById('total-display').innerText = "Total: $" + prices[selected];
   }
+  // Initialize total on page load
+  window.onload = updateTotal;
 </script>
 {% endblock %}
