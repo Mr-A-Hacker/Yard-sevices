@@ -23,6 +23,7 @@ def get_started():
         service = request.form["service"]
         day = request.form["day"]
         time = request.form["time"]
+        note = request.form.get("note", "")  # new field
 
         # Check if day is blocked
         if day in busy_days:
@@ -36,7 +37,8 @@ def get_started():
             "service": service,
             "day": day,
             "time": time,
-            "cost": cost
+            "cost": cost,
+            "note": note
         })
         return render_template("submitted.html", cost=cost, submissions=submissions, logged_in=("user" in session))
 
