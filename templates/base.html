@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}Yard Services{% endblock %}</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #2c3e50, #34495e);
+      margin: 0;
+      padding: 0;
+      color: white;
+    }
+    nav {
+      background: rgba(0,0,0,0.7);
+      padding: 15px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    nav a {
+      color: #ecf0f1;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    nav a:hover {
+      color: #1abc9c;
+      transform: scale(1.1);
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(-20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+  <!-- Shared Navbar -->
+  <nav>
+    <a href="/">Home</a>
+    {% if logged_in %}
+      <a href="/get-started">Get Started</a>
+      {% if session['user'] == 'admin' %}
+        <a href="/admin">Admin</a>
+      {% endif %}
+      <a href="/logout">Logout</a>
+    {% else %}
+      <a href="/login">Login</a>
+      <a href="/signup">Sign Up</a>
+    {% endif %}
+  </nav>
+
+  <!-- Page Content -->
+  {% block content %}{% endblock %}
+</body>
+</html>
