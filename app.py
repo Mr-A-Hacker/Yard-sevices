@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import os
 import sqlite3
@@ -12,25 +13,30 @@ UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Database setup
+# Database file
 DB_FILE = "database.db"
 
+# Initialize database
 def init_db():
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
-    # Table for posts
+    # Posts table
     c.execute('''CREATE TABLE IF NOT EXISTS posts
                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
                   title TEXT, content TEXT, image TEXT)''')
-    # Table for services
+    # Services table
     c.execute('''CREATE TABLE IF NOT EXISTS services
                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
                   name TEXT UNIQUE, price INTEGER)''')
-    # Table for submissions
+    # Submissions table
     c.execute('''CREATE TABLE IF NOT EXISTS submissions
                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
                   user TEXT, address TEXT, phone TEXT,
                   service TEXT, cost INTEGER, time TEXT)''')
+    # Users table
+    c.execute('''CREATE TABLE IF NOT EXISTS users
+                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  username TEXT UNIQUE, password TEXT)''')
     conn.commit()
     conn.close()
 
@@ -58,11 +64,38 @@ def home():
     conn.close()
     return render_template('home.html', logged_in='user' in session, posts=posts)
 
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = generate_password_hash(request.form['password'])
+        conn = sqlite3.connect(DB_FILE)
+        c = conn.cursor()
+        try:
+            c.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('login'))
+        except sqlite3.IntegrityError:
+            conn.close()
+            return "Username already exists!"
+    return render_template('signup.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        session['user'] = request.form['username']
-        return redirect(url_for('home'))
+        username = request.form['username']
+        password = request.form['password']
+        conn = sqlite3.connect(DB_FILE)
+        c = conn.cursor()
+        c.execute("SELECT password FROM users WHERE username=?", (username,))
+        row = c.fetchone()
+        conn.close()
+        if row and check_password_hash(row[0], password):
+            session['user'] = username
+            return redirect(url_for('home'))
+        else:
+            return "Invalid credentials!"
     return render_template('login.html')
 
 @app.route('/logout')
