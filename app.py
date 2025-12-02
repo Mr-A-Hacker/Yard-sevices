@@ -38,7 +38,7 @@ def get_started():
             "time": time,
             "cost": cost
         })
-        return render_template("submitted.html", cost=cost, logged_in=("user" in session))
+        return render_template("submitted.html", cost=cost, submissions=submissions, logged_in=("user" in session))
 
     return render_template("get_started.html", services=services, logged_in=("user" in session))
 
@@ -96,6 +96,12 @@ def admin():
             busy_day = request.form["busy_day"]
             if busy_day not in busy_days:
                 busy_days.append(busy_day)
+
+        # Delete post
+        elif "delete_post" in request.form:
+            index = int(request.form["delete_post"])
+            if 0 <= index < len(posts):
+                posts.pop(index)
 
     return render_template("admin.html", posts=posts, services=services,
                            submissions=submissions, busy_days=busy_days)
