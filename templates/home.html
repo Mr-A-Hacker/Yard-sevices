@@ -2,24 +2,76 @@
 <html>
 <head>
   <title>Yard Services</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f7;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .buttons {
+      margin: 20px;
+      text-align: center;
+    }
+    .buttons a {
+      display: inline-block;
+      margin: 10px;
+      padding: 12px 24px;
+      background: #3498db;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    .buttons a:hover {
+      background: #2980b9;
+    }
+    .posts {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    .post img {
+      max-width: 100%;
+      border-radius: 5px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Welcome to Yard Services</h1>
+  <header>
+    <h1>Welcome to Yard Services</h1>
+    <p>Reliable lawn care, snow removal, and more</p>
+  </header>
 
-  {% if logged_in %}
-    <a href="/get-started">Get Started Now</a> | <a href="/logout">Logout</a>
-  {% else %}
-    <a href="/login">Login or Sign Up</a>
-  {% endif %}
-
-  <hr>
-  <h2>Latest Updates</h2>
-  {% for post in posts %}
-    <h3>{{ post.title }}</h3>
-    <p>{{ post.content }}</p>
-    {% if post.image %}
-      <img src="{{ url_for('static', filename='uploads/' + post.image) }}" width="300">
+  <div class="buttons">
+    {% if logged_in %}
+      <a href="/get-started">Get Started Now</a>
+      <a href="/logout">Logout</a>
+    {% else %}
+      <a href="/login">Login</a>
+      <a href="/login">Sign Up</a>
     {% endif %}
-  {% endfor %}
+  </div>
+
+  <div class="posts">
+    <h2>Latest Updates</h2>
+    {% for post in posts %}
+      <div class="post">
+        <h3>{{ post.title }}</h3>
+        <p>{{ post.content }}</p>
+        {% if post.image %}
+          <img src="{{ url_for('static', filename='uploads/' + post.image) }}">
+        {% endif %}
+      </div>
+      <hr>
+    {% endfor %}
+  </div>
 </body>
 </html>
