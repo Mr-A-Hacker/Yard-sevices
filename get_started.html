@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Get Started</title>
+</head>
+<body>
+  <h2>Service Request Form</h2>
+  <form method="POST">
+    <input name="address" placeholder="Your Address"><br>
+    <input name="phone" placeholder="Phone Number"><br>
+    <select name="service">
+      {% for service, price in services.items() %}
+        <option value="{{ service }}">{{ service }} (${{ price }})</option>
+      {% endfor %}
+    </select><br>
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>
